@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .tabsbox {
+            width: 1000px;
+            height: 700px;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        
+        .firstnav {
+            width: 30%;
+            height: 100%;
+            float: left;
+            background-color: #4e73df;
+            background-image: linear-gradient( 180deg, #4e73df 10%, #224abe 100%);
+            overflow: auto;
+        }
+        
+        .tabscon {
+            width: 70%;
+            height: 100%;
+            float: left;
+            background-color: rgb(240, 238, 238);
+            padding: 20px;
+            overflow: auto;
+        }
+        
+        .firstnav header {
+            display: flex;
+            height: 60px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .firstnav header input {
+            height: 35px;
+            padding-left: 10px;
+            margin-left: 20px;
+            flex: 4;
+            border-radius: 20px;
+            outline: none;
+            border: 0;
+        }
+        
+        .firstnav header .tabadd {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            cursor: pointer;
+            color: #fff;
+        }
+        
+        .firstnav ul {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        
+        .firstnav ul li {
+            margin: 5px 0;
+            background-color: #fff;
+            display: inline-block;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            padding-left: 5px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .firstnav ul li input {
+            width: 250px;
+            height: 25px;
+            outline: none;
+            border: 0;
+            transform: translate(0px, -2px);
+        }
+        
+        .liactive {
+            border-radius: 20px;
+            transition: all 1s;
+        }
+        
+        .tabscon section {
+            display: none;
+            word-break: break-all;
+        }
+        
+        .tabscon .conactive {
+            display: block;
+        }
+        
+        .hide {
+            display: none !important;
+        }
+    </style>
+
+    <div class="tabsbox" id="tab">
+        <nav class="firstnav">
+            <header>
+                <input type="text" id="search" placeholder="Search....">
+                <div class="tabadd">
+                    <span>+</span>
+                </div>
+            </header>
+
+            <ul>
+                <li draggable="true" class="liactive">
+                    Test1
+                </li>
+                <li draggable="true">
+                    Test2
+                </li>
+            </ul>
+        </nav>
+
+        <div class="tabscon">
+            <section class="conactive">Task: You are given a 4 * 4 tic-tac-toe grid. You have to implement a neural network that will be able to output the coordinates of a cell where an X has to be written in order to win the game. Input: Your neural network will be given five
+                consecutive 4 * 4 tic-tac-toe grids, each cell filled with either an O (a nought), X (a cross) or . (empty space). It is guaranteed that the field is one step away from victory for the X player. Output: Your neural network should output
+                two numbers x and y - the coordinates of the cell an X should be placed at. Note: to have your solution accepted, your neural network has to answer with at least 80% accuracy, which means that it should output correct answer at least 4
+                times out of 5.</section>
+            <section>Task: You are given a sorted array of n integer elements and a natural number m – the quantity of “number queries”. You have to write the “Binary search” – find out whether or not the number k exists in the array for logarithmic time O(log(n))
+                for each of m queries. If the number exists, output its index. It is guaranteed that there are no doubles in the array. Input: The first line contains a natural number n (1 ≤ n≤105) – the quantity of elements of the array. The second line
+                contains n numbers – the elements of the array. The third line contains a natural number m (1 ≤ m≤105) – the quantity of number queries. The next m lines contain a number k (the values of k on different lines can be the same). Output:
+                m lines each containing the index of the element k if it exists in the array or “-1” if it doesn’t.</section>
+        </div>
+    </div>
+
+    <script>
+        var that;
+        class ToDo {
+            constructor(id) {
+                that = this;
+                this.main = document.querySelector(id)
+                this.addButton = this.main.querySelector('.firstnav').querySelector('header').querySelector('.tabadd')
+                this.ul = this.main.querySelector('.firstnav').querySelector('ul')
+                this.fsection = this.main.querySelector('.tabscon')
+                this.search = this.main.querySelector('.firstnav').querySelector('header').querySelector('#search')
+                this.init()
+            }
+
+            init() {
+                this.updateNode()
+                this.addButton.onclick = this.add
+                this.search.onkeyup = this.searchItem
+                for (var i = 0; i < this.lis.length; i++) {
+                    this.lis[i].index = i;
+                    this.lis[i].onclick = this.toggle
+                    this.lis[i].ondblclick = this.edit
+                    this.lis[i].ondragleave = this.delete
+                    this.sections[i].ondblclick = this.editSection
+                }
+            }
+
+            updateNode() {
+                this.lis = this.main.querySelector('.firstnav').querySelectorAll('li')
+                this.sections = this.main.querySelectorAll('section')
+            }
+
+            toggle() {
+                that.clearClass();
+                this.className = 'liactive';
+                that.sections[this.index].className = 'conactive';
+            }
+
+            clearClass() {
+                for (var i = 0; i < this.lis.length; i++) {
+                    this.lis[i].className = ''
+                    this.sections[i].className = ''
+                }
+            }
+
+            add() {
+                that.clearClass();
+                var li = '<li draggable="true" class="liactive">New Task</li>';
+                var section = '<section class="conactive">Please input details</section>'
+                that.ul.insertAdjacentHTML('beforeend', li);
+                that.fsection.insertAdjacentHTML('beforeend', section)
+                that.init()
+            }
+
+            edit() {
+                var str = this.innerText
+                window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                this.innerHTML = '<input type="text" />'
+                var input = this.children[0]
+                input.value = str;
+                input.select();
+                input.onblur = function() {
+                    this.parentNode.innerHTML = this.value
+                }
+
+                input.onkeyup = function(e) {
+                    if (e.keyCode === 13) {
+                        this.blur();
+                    }
+                }
+            }
+
+            editSection() {
+                var str = this.innerText
+                window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                this.innerHTML = '<textarea style="outline: none;" rows="30" cols="85"></textarea>'
+                var input = this.children[0]
+                input.value = str;
+                input.select();
+                input.onblur = function() {
+                    this.parentNode.innerHTML = this.value
+                }
+
+                input.onkeyup = function(e) {
+                    if (e.keyCode === 13) {
+                        this.blur();
+                    }
+                }
+            }
+
+            delete() {
+                var index = this.index;
+                that.lis[index].remove();
+                that.sections[index].remove();
+                that.init()
+                if (document.querySelector('.liactive')) return;
+                index--
+                that.lis[index] && that.lis[index].click();
+
+            }
+
+            searchItem() {
+                for (var i = 0; i < that.lis.length; i++) {
+                    if (that.lis[i].innerText.toUpperCase().indexOf(that.search.value.toUpperCase()) > -1) {
+                        that.lis[i].style.display = "inline-block"
+                    } else {
+                        that.lis[i].style.display = "none"
+                    }
+                }
+
+            }
+        }
+
+        new ToDo('#tab')
+    </script>
+</body>
+
+</html>
